@@ -2,9 +2,9 @@ import type { PathLike } from 'node:fs';
 import { readdir, stat } from 'node:fs/promises';
 import { URL } from 'node:url';
 import { predicate as commandPredicate } from '../commands/index';
-import type { Command } from '../commands/index.ts';
+import type { Command } from '../commands/index';
 import { predicate as eventPredicate } from '../events/index';
-import type { Event } from '../events/index.ts';
+import type { Event } from '../events/index';
 
 /**
  * A predicate to check if the structure is valid
@@ -22,7 +22,7 @@ export type StructurePredicate<T> = (structure: unknown) => structure is T;
 export async function loadStructures<T>(
 	dir: PathLike,
 	predicate: StructurePredicate<T>,
-	recursive = true,
+	recursive = true
 ): Promise<T[]> {
 	// Get the stats of the directory
 	const statDir = await stat(dir);
@@ -46,7 +46,7 @@ export async function loadStructures<T>(
 		}
 
 		// Get the stats of the file
-		const statFile = await stat(new URL(`${dir}/${file}`));
+		const statFile = await stat(`${dir}/${file}`);
 
 		// If the file is a directory and recursive is true, recursively load the structures in the directory
 		if (statFile.isDirectory() && recursive) {
@@ -55,7 +55,7 @@ export async function loadStructures<T>(
 		}
 
 		// Import the structure dynamically from the file
-		const structure = (await import(`${dir}/${file}`)).default;
+		const structure = (await import(`${dir}/${file}`.replace(`file:///${__dirname}/src`, '..'))).default;
 
 		// If the structure is a valid structure, add it
 		if (predicate(structure)) structures.push(structure);
@@ -67,7 +67,7 @@ export async function loadStructures<T>(
 export async function loadCommands(dir: PathLike, recursive = true): Promise<Map<string, Command>> {
 	return (await loadStructures(dir, commandPredicate, recursive)).reduce(
 		(acc, cur) => acc.set(cur.data.name, cur),
-		new Map<string, Command>(),
+		new Map<string, Command>()
 	);
 }
 
