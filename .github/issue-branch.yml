@@ -1,0 +1,12 @@
+branchName: short
+gitSafeReplacementChar: "-"
+autoCloseIssue: true
+branches:
+  - label: enhancement
+    prefix: feature/
+  - label: bug
+    prefix: bugfix/
+openDraftPR: true
+copyIssueDescriptionToPR: true
+copyIssueLabelsToPR: true
+copyIssueAssigneeToPR: true
