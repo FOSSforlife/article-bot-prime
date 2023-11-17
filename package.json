@@ -29,6 +29,7 @@
 		"fs-extra": "^10.1.0",
 		"mbfc-node": "^0.0.2",
 		"node-schedule": "^2.1.1",
+		"openai": "^4.19.0",
 		"reflect-metadata": "^0.1.13",
 		"valid-url": "^1.0.9"
 	},

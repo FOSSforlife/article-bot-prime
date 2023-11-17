@@ -5,6 +5,7 @@ import path from 'path';
 import { MBFCData, Result } from 'mbfc-node/dist/interfaces';
 import { Client, ForumChannel, TextChannel } from 'discord.js';
 import { articleParserMockResponse } from '../test-data/article-parser';
+import { getArticleSummary } from './openai';
 
 const articleBotChannelName = '🤖-article-voting';
 
@@ -31,16 +32,15 @@ export default async function postArticle(urlFromFeed: string, client: Client) {
 
 	const mbfcData = JSON.parse((await readFile(path.join('cache', 'mbfc-data.json'))).toString());
 
-	const mbfcResult = getMbfcForUrl(urlFromFeed, mbfcData);
-
 	// Uncomment to use test data:
 	const { url, title, description, links, image, author, source, published, ttr, content } = articleParserMockResponse;
 
+	const mbfcResult = getMbfcForUrl(url, mbfcData);
 	if (!title || !url) {
 		throw new Error('Invalid article data');
 	}
 
-	console.log(content);
+	// console.log(content);
 	const article = {
 		title,
 		description,
@@ -54,17 +54,18 @@ export default async function postArticle(urlFromFeed: string, client: Client) {
 	};
 	console.log(article);
 
+	// const articleSummary = await getArticleSummary(content);
+	// console.log({ articleSummary });
 	if (!mbfcResult) {
 		return;
 	}
 	const { bias, credibility, factualReporting, name } = mbfcResult;
 
 	const channel = (await client.channels.fetch(ARTICLE_FORUM_ID)) as ForumChannel;
-	console.log(channel);
-	await channel.threads.create({
-		message: {
-			content: `**${title}**\n${url}\n${bias} (${credibility})\n${factualReporting}`,
-		},
-		name: `${title} (${name})`,
-	});
+	// await channel.threads.create({
+	// 	message: {
+	// 		content: `**${title}**\n${url}\n${bias} (${credibility})\n${factualReporting}`,
+	// 	},
+	// 	name: `${title} (${name})`,
+	// });
 }
