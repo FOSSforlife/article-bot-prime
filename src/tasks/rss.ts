@@ -1,3 +1,5 @@
+import { Client } from 'discord.js';
+
 // Post every article by checking each hour
 interface FrequencyEvery {
 	type: 'every';
@@ -17,7 +19,7 @@ export interface RSSConfig {
 	frequency: Frequency;
 }
 
-export default function postFromRSS(config: RSSConfig) {
+export default function postFromRSS(config: RSSConfig, client: Client) {
 	console.log('Hello, world!');
 	// if frequency is every, then only post what hasn't already been posted
 

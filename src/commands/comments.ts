@@ -16,6 +16,7 @@ export default {
 				},
 				preferredDomains: ['apnews.com'],
 			},
+			interaction.client,
 			true
 		);
 
