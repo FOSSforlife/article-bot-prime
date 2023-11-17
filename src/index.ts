@@ -1,6 +1,5 @@
 import process from 'node:process';
 import path from 'node:path';
-import { URL } from 'node:url';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { loadCommands, loadEvents } from './util/loaders';
 import { registerEvents } from './util/registerEvents';
