@@ -1,6 +1,12 @@
 import { RedditConfig } from './tasks/reddit';
 import { RSSConfig } from './tasks/rss';
 
+// Test channel
+export const ARTICLE_FORUM_ID = '1029218031857053766';
+
+// Production channel
+// export const ARTICLE_FORUM_ID = '1020378946900074557';
+
 export default {
 	rssFeeds: [
 		{

@@ -6,6 +6,7 @@ import { MBFCData, Result } from 'mbfc-node/dist/interfaces';
 import { Client, ForumChannel, TextChannel } from 'discord.js';
 import { articleParserMockResponse } from '../test-data/article-parser';
 import { getArticleSummary } from './openai';
+import { ARTICLE_FORUM_ID } from '../config';
 
 const articleBotChannelName = '🤖-article-voting';
 
@@ -21,9 +22,6 @@ function getMbfcForUrl(url: string, mbfcData: MBFCData): Result | null {
 		}
 	}
 }
-
-const TEST_CHAT_ID = '945053517243113507';
-const ARTICLE_FORUM_ID = '1020378946900074557';
 
 export default async function postArticle(urlFromFeed: string, client: Client) {
 	// const { url, title, description, links, image, author, source, published, ttr, content } = await extract(urlFromFeed);
@@ -54,6 +52,7 @@ export default async function postArticle(urlFromFeed: string, client: Client) {
 	};
 	console.log(article);
 
+	// TODO: Article summary after the article has been posted
 	// const articleSummary = await getArticleSummary(content);
 	// console.log({ articleSummary });
 	if (!mbfcResult) {
@@ -62,10 +61,10 @@ export default async function postArticle(urlFromFeed: string, client: Client) {
 	const { bias, credibility, factualReporting, name } = mbfcResult;
 
 	const channel = (await client.channels.fetch(ARTICLE_FORUM_ID)) as ForumChannel;
-	// await channel.threads.create({
-	// 	message: {
-	// 		content: `**${title}**\n${url}\n${bias} (${credibility})\n${factualReporting}`,
-	// 	},
-	// 	name: `${title} (${name})`,
-	// });
+	await channel.threads.create({
+		message: {
+			content: `**${title}**\n${url}\n${bias} (${credibility})\n${factualReporting}`,
+		},
+		name: `${title} (${name})`,
+	});
 }

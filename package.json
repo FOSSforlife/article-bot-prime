@@ -31,6 +31,7 @@
 		"node-schedule": "^2.1.1",
 		"openai": "^4.19.0",
 		"reflect-metadata": "^0.1.13",
+		"rss-parser": "^3.13.0",
 		"valid-url": "^1.0.9"
 	},
 	"devDependencies": {
