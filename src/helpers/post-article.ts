@@ -58,13 +58,13 @@ export default async function postArticle(urlFromFeed: string, client: Client) {
 	if (!mbfcResult) {
 		return;
 	}
-	const { bias, credibility, factualReporting, name } = mbfcResult;
+	const { bias, credibility, factualReporting, name: publisher } = mbfcResult;
 
 	const channel = (await client.channels.fetch(ARTICLE_FORUM_ID)) as ForumChannel;
 	await channel.threads.create({
 		message: {
-			content: `**${title}**\n${url}\n${bias} (${credibility})\n${factualReporting}`,
+			content: `**${title}**\n${url}\n**Info about ${publisher}:**\nBias: ${bias}\nCredibility ${credibility}\nFactual Reporting: ${factualReporting}`,
 		},
-		name: `${title} (${name})`,
+		name: `${title} (${publisher})`,
 	});
 }
