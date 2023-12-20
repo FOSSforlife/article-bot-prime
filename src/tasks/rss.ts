@@ -35,12 +35,11 @@ export default async function postFromRSS(config: RSSConfig, client: Client) {
 				return;
 			}
 
-			// TODO: Remove
 			// For testing purposes, post the first article
-			if (item.link) {
-				await postArticle(item.link, client, config.name);
-				return;
-			}
+			// if (item.link) {
+			// 	await postArticle(item.link, client, config.name);
+			// 	return;
+			// }
 
 			const articleDate = new Date(item.pubDate);
 			const now = new Date();
