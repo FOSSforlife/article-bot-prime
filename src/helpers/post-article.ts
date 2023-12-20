@@ -5,7 +5,7 @@ import path from 'path';
 import { MBFCData, Result } from 'mbfc-node/dist/interfaces';
 import { Client, ForumChannel, TextChannel } from 'discord.js';
 import { articleParserMockResponse } from '../test-data/article-parser';
-import { getArticleSummary } from './openai';
+import { getArticleSummary } from '../services/openai';
 import { ARTICLE_FORUM_ID } from '../config';
 
 const articleBotChannelName = '🤖-article-voting';

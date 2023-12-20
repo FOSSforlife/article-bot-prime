@@ -28,11 +28,16 @@ export default async function postFromRSS(config: RSSConfig, client: Client) {
 		console.log(feed.title);
 
 		feed.items.forEach((item) => {
+			// TODO: This won't work if the article's pubDate is behind UTC time
 			if (item.link && item.pubDate && new Date(item.pubDate).getHours() === new Date().getHours()) {
 				postArticle(item.link, client);
 				console.log(item.link);
 			} else {
 				console.log(`Not within the hour: ${item.link} ${item.pubDate}`);
+				console.log(
+					item.pubDate ? new Date(item.pubDate).getHours() : "Can't get article pubdate",
+					new Date().getHours()
+				);
 			}
 		});
 	} else {
