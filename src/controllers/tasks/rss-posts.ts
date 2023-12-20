@@ -1,6 +1,6 @@
 import { Client } from 'discord.js';
 import Parser from 'rss-parser';
-import postArticle from '../helpers/post-article';
+import postArticle from '../../functions/post-article';
 
 // Post every article by checking each hour
 interface FrequencyEvery {

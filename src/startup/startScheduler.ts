@@ -1,7 +1,7 @@
 import { scheduleJob } from 'node-schedule';
 import config from '../config';
-import postFromRSS from '../tasks/rss';
-import postFromReddit from '../tasks/reddit';
+import postFromRSS from '../controllers/tasks/rss-posts';
+import postFromReddit from '../controllers/tasks/reddit-posts';
 import { Client } from 'discord.js';
 
 function scheduleJobAtHour(hour: number, fn: () => void) {

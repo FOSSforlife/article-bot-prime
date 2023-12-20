@@ -1,9 +1,9 @@
-import type { Command } from './index.ts';
+import type { Command } from './index.js';
 
 export default {
 	data: {
-		name: 'test',
-		description: 'Test',
+		name: 'summarize',
+		description: 'Summarize the article in the thread OP.',
 	},
 	async execute(interaction) {
 		await interaction.reply('Pong!');

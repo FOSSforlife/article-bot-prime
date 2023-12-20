@@ -1,8 +1,9 @@
 import axios from 'axios';
-import redditTestData from '../test-data/reddit.json';
-import { articleParserMockResponse } from '../test-data/article-parser';
+import redditTestData from '../../services/test-data/reddit.json';
+import { articleParserMockResponse } from '../../services/test-data/article-parser';
 import { Client } from 'discord.js';
-import postArticle from '../helpers/post-article';
+import postArticle from '../../functions/post-article';
+import { RedditClient, RedditClientInterface } from '../../services/reddit/reddit';
 
 // Post every article by checking each hour
 interface FrequencyEvery {
@@ -25,7 +26,11 @@ export interface RedditConfig {
 }
 
 // TODO: Search past posts to make sure the article hasn't been posted already
-export default async function postFromReddit(config: RedditConfig, client: Client, useTestData = false) {
+export default async function postFromReddit(
+	config: RedditConfig,
+	client: Client,
+	redditClient: RedditClientInterface = new RedditClient()
+) {
 	// console.log('Hello, world!');
 
 	// if (useTestData) {
@@ -36,9 +41,7 @@ export default async function postFromReddit(config: RedditConfig, client: Clien
 	// 	return;
 	// }
 
-	const response = await axios.get(`https://www.reddit.com/r/${config.subreddits.join('+')}/top.json?t=day`);
-	console.log(JSON.stringify(response.data));
-	const posts = response.data.data.children;
+	const posts = await redditClient.getPosts(config.subreddits);
 	const preferredPosts = posts.filter((post: any) => (config.preferredDomains ?? []).includes(post.data.domain));
 	if (preferredPosts.length > 0) {
 		const { permalink, url, link_flair_text, title } = preferredPosts[0].data;

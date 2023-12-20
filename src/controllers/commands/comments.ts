@@ -1,5 +1,5 @@
-import postFromReddit from '../tasks/reddit';
-import type { Command } from './index.ts';
+import postFromReddit from '../tasks/reddit-posts';
+import type { Command } from '.';
 
 export default {
 	data: {

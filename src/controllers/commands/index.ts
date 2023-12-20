@@ -1,5 +1,5 @@
 import type { RESTPostAPIApplicationCommandsJSONBody, CommandInteraction } from 'discord.js';
-import type { StructurePredicate } from '../util/loaders';
+import type { StructurePredicate } from '../../startup/loaders';
 
 /**
  * Defines the structure of a command

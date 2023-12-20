@@ -1,5 +1,5 @@
-import { RedditConfig } from './tasks/reddit';
-import { RSSConfig } from './tasks/rss';
+import { RedditConfig } from './controllers/tasks/reddit-posts';
+import { RSSConfig } from './controllers/tasks/rss-posts';
 
 // Test channel
 export const ARTICLE_FORUM_ID = '1029218031857053766';

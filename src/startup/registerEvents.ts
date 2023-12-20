@@ -1,6 +1,6 @@
 import { Events, type Client } from 'discord.js';
-import type { Command } from '../commands/index.ts';
-import type { Event } from '../events/index.ts';
+import type { Command } from '../controllers/commands/index.js';
+import type { Event } from '../controllers/events/index.js';
 
 export function registerEvents(commands: Map<string, Command>, events: Event[], client: Client): void {
 	// Create an event to handle command interactions
