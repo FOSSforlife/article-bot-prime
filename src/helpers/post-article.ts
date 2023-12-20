@@ -41,12 +41,10 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 	}
 	const mbfcResult = getMbfcForUrl(url, mbfcData);
 
-	// console.log(content);
 	const article = {
 		title,
 		description,
 		image,
-		// content,
 		readingTimeSeconds: ttr,
 		authors: author ? [author] : [],
 		publisher: 'Publisher name',
@@ -61,7 +59,7 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 	if (mbfcResult) {
 		const { bias, credibility, factualReporting, name } = mbfcResult;
 		publisher = name;
-		mbfcString = `**Media Bias Fact Check for ${publisher}:**\nBias: ${bias}\nCredibility ${credibility}\nFactual Reporting: ${factualReporting}`;
+		mbfcString = `**Media Bias Fact Check for "${publisher}":**\nBias: ${bias}\nCredibility ${credibility}\nFactual Reporting: ${factualReporting}\n([See more](${url}))`;
 	}
 
 	let aiSummaryString = '';
