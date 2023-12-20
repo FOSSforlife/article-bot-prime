@@ -61,23 +61,27 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 	if (mbfcResult) {
 		const { bias, credibility, factualReporting, name } = mbfcResult;
 		publisher = name;
-		mbfcString = `**Info about ${publisher}:**\nBias: ${bias}\nCredibility ${credibility}\nFactual Reporting: ${factualReporting}`;
+		mbfcString = `**Media Bias Fact Check for ${publisher}:**\nBias: ${bias}\nCredibility ${credibility}\nFactual Reporting: ${factualReporting}`;
+	}
+
+	let aiSummaryString = '';
+	if (content) {
+		const articleSummary = await getArticleSummary(title, content, author, publisher ?? tagName);
+		if (articleSummary) {
+			const { summary, discussionQuestions, bias } = articleSummary;
+			aiSummaryString = `**Summary:** ${summary}\n\n**Discussion Questions:**\n${discussionQuestions
+				.map((questionText) => `- ${questionText}`)
+				.join('\n')}\n\n**Bias:**\n${bias}\n\n(Generated using OpenAI's GPT-3.5-Turbo)`;
+		}
 	}
 
 	const channel = (await client.channels.fetch(ARTICLE_FORUM_ID)) as ForumChannel;
 	const tag = channel.availableTags.find((tag) => tag.name === tagName);
 	await channel.threads.create({
 		message: {
-			content: `**${title}**\n${url}\nWord count: ${wordCount}\n\n${mbfcString}`,
+			content: `${aiSummaryString}\n\nWord count: ${wordCount}\n\n${mbfcString}\n${url}`,
 		},
 		appliedTags: tag ? [tag.id] : [],
 		name: `${title}`,
 	});
-
-	if (content)
-		void (async () => {
-			const articleSummary = await getArticleSummary(title, content, author, publisher ?? tagName);
-			console.log({ articleSummary });
-			// TODO: Article summary after the article has been posted (or maybe as part of the article post?)
-		})();
 }
