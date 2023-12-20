@@ -45,8 +45,8 @@ export default async function postFromRSS(config: RSSConfig, client: Client) {
 				postArticle(item.link, client);
 				console.log(item.link);
 			} else {
-				console.log(`Not within the hour: ${item.link} ${item.pubDate}`);
-				console.log(new Date(item.pubDate).getHours(), new Date().getHours());
+				// console.log(`Not within the hour: ${item.link} ${item.pubDate}`);
+				// console.log(new Date(item.pubDate).getHours(), new Date().getHours());
 			}
 		});
 	} else {
