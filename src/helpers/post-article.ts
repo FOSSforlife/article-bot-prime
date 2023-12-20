@@ -65,7 +65,7 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 	}
 
 	const channel = (await client.channels.fetch(ARTICLE_FORUM_ID)) as ForumChannel;
-	const tag = channel.availableTags.find((tag) => tag.name === 'Articles');
+	const tag = channel.availableTags.find((tag) => tag.name === tagName);
 	await channel.threads.create({
 		message: {
 			content: `**${title}**\n${url}\nWord count: ${wordCount}\n\n${mbfcString}`,
