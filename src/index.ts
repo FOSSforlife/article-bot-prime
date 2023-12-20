@@ -6,6 +6,7 @@ import { registerEvents } from './util/registerEvents';
 import axios from 'axios';
 import { mkdirpSync } from 'fs-extra';
 import { writeFileSync } from 'node:fs';
+import { startScheduler } from './util/startScheduler';
 
 (async () => {
 	function downloadMbfcData() {
@@ -27,7 +28,7 @@ import { writeFileSync } from 'node:fs';
 
 	// Register the event handlers
 	registerEvents(commands, events, client);
-	// startScheduler(client);
+	startScheduler(client);
 
 	// Login to the client
 	void client.login(process.env.DISCORD_TOKEN);
