@@ -1,5 +1,6 @@
 import type { RESTPostAPIApplicationCommandsJSONBody, CommandInteraction } from 'discord.js';
 import type { StructurePredicate } from '../../startup/loaders';
+import { DiscordClient } from '../../services/discord/discord';
 
 /**
  * Defines the structure of a command
@@ -14,7 +15,7 @@ export type Command = {
 	 *
 	 * @param interaction - The interaction of the command
 	 */
-	execute(interaction: CommandInteraction): Promise<void> | void;
+	execute(interaction: CommandInteraction, client: DiscordClient): Promise<void> | void;
 };
 
 // Defines the predicate to check if an object is a valid Command type

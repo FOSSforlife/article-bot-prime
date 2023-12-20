@@ -1,8 +1,9 @@
-import { Events, type Client } from 'discord.js';
+import { Events } from 'discord.js';
 import type { Command } from '../controllers/commands/index.js';
 import type { Event } from '../controllers/events/index.js';
+import { DiscordClient } from '../services/discord/discord.js';
 
-export function registerEvents(commands: Map<string, Command>, events: Event[], client: Client): void {
+export function registerEvents(commands: Map<string, Command>, events: Event[], client: DiscordClient): void {
 	// Create an event to handle command interactions
 	const interactionCreateEvent: Event<Events.InteractionCreate> = {
 		name: Events.InteractionCreate,
@@ -14,12 +15,12 @@ export function registerEvents(commands: Map<string, Command>, events: Event[], 
 					throw new Error(`Command '${interaction.commandName}' not found.`);
 				}
 
-				await command.execute(interaction);
+				await command.execute(interaction, client);
 			}
 		},
 	};
 
 	for (const event of [...events, interactionCreateEvent]) {
-		client[event.once ? 'once' : 'on'](event.name, async (...args) => event.execute(...args));
+		client.registerEvent(event);
 	}
 }

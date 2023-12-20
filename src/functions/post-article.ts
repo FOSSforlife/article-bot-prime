@@ -5,8 +5,9 @@ import path from 'path';
 import { MBFCData, Result } from 'mbfc-node/dist/interfaces';
 import { Client, ForumChannel, TextChannel } from 'discord.js';
 import { articleParserMockResponse } from '../services/test-data/article-parser';
-import { getArticleSummary } from '../services/openai';
+import { OpenAIClient } from '../services/openai/openai';
 import { ARTICLE_FORUM_ID } from '../config';
+import { DiscordClient } from '../services/discord/discord';
 
 function getMbfcForUrl(url: string, mbfcData: MBFCData): Result | null {
 	try {
@@ -21,7 +22,12 @@ function getMbfcForUrl(url: string, mbfcData: MBFCData): Result | null {
 	}
 }
 
-export default async function postArticle(urlFromFeed: string, client: Client, tagName: string) {
+export default async function postArticle(
+	urlFromFeed: string,
+	discordClient: DiscordClient,
+	tagName: string,
+	openAiClient = new OpenAIClient()
+) {
 	const data = await extract(urlFromFeed);
 	if (!data) {
 		console.error('No data');
@@ -52,7 +58,6 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 		mbfcResult: mbfcResult ?? undefined,
 	};
 	console.log(article);
-	const wordCount = content?.split(' ').length ?? 0;
 
 	let mbfcString = '';
 	let publisher;
@@ -67,7 +72,7 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 	let aiSummaryString = '';
 	let shortAiSummaryString = '';
 	if (content) {
-		const articleSummary = await getArticleSummary(title, content, author, publisher ?? tagName);
+		const articleSummary = await openAiClient.getArticleSummary(title, content, author, publisher ?? tagName);
 		if (articleSummary) {
 			const { summary, discussionQuestions, terms, bias } = articleSummary;
 			aiSummaryString = `**Summary:** ${summary}\n\n**Discussion Questions:**\n${discussionQuestions
@@ -86,8 +91,7 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 		? `Reading time: ${Math.round(ttr / 60)} minute${Math.round(ttr / 60) === 1 ? '' : 's'}\n\n`
 		: '';
 
-	const channel = (await client.channels.fetch(ARTICLE_FORUM_ID)) as ForumChannel;
-	const tag = channel.availableTags.find((tag) => tag.name === tagName);
+	const tag = discordClient.getAvailableForumTags().find((tag) => tag.name === tagName);
 	let threadContent = `${aiSummaryString}${readingTimeString}${mbfcString}${url}`;
 	if (threadContent.length > 2000) {
 		threadContent = `${aiSummaryString}${readingTimeString}${url}`;
@@ -95,11 +99,6 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 	if (threadContent.length > 2000) {
 		threadContent = `${shortAiSummaryString}${readingTimeString}${url}`;
 	}
-	await channel.threads.create({
-		message: {
-			content: threadContent,
-		},
-		appliedTags: tag ? [tag.id] : [],
-		name: `${title}`,
-	});
+
+	await discordClient.createThread(`${title}`, threadContent, tag ? [tag.id] : []);
 }

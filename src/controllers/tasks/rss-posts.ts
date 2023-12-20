@@ -1,6 +1,7 @@
 import { Client } from 'discord.js';
 import Parser from 'rss-parser';
 import postArticle from '../../functions/post-article';
+import { DiscordClient } from '../../services/discord/discord';
 
 // Post every article by checking each hour
 interface FrequencyEvery {
@@ -22,7 +23,7 @@ export interface RSSConfig {
 	aiSummaries: boolean;
 }
 
-export default async function postFromRSS(config: RSSConfig, client: Client) {
+export default async function postFromRSS(config: RSSConfig, client: DiscordClient) {
 	if (config.frequency.type === 'every') {
 		const parser = new Parser();
 		const feed = await parser.parseURL(config.url);

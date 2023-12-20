@@ -7,6 +7,7 @@ import axios from 'axios';
 import { mkdirpSync } from 'fs-extra';
 import { writeFileSync } from 'node:fs';
 import { startScheduler } from './startup/startScheduler';
+import { DiscordClient } from './services/discord/discord';
 
 (async () => {
 	function downloadMbfcData() {
@@ -20,7 +21,7 @@ import { startScheduler } from './startup/startScheduler';
 	}
 
 	// Initialize the client
-	const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+	const client = new DiscordClient(new Client({ intents: [GatewayIntentBits.Guilds] }));
 
 	// Load the events and commands
 	const events = await loadEvents(path.join(__dirname, 'controllers', 'events'));
@@ -31,6 +32,6 @@ import { startScheduler } from './startup/startScheduler';
 	startScheduler(client);
 
 	// Login to the client
-	void client.login(process.env.DISCORD_TOKEN);
+	void client.init();
 	downloadMbfcData();
 })();

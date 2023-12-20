@@ -4,6 +4,7 @@ import { articleParserMockResponse } from '../../services/test-data/article-pars
 import { Client } from 'discord.js';
 import postArticle from '../../functions/post-article';
 import { RedditClient, RedditClientInterface } from '../../services/reddit/reddit';
+import { DiscordClient } from '../../services/discord/discord';
 
 // Post every article by checking each hour
 interface FrequencyEvery {
@@ -28,7 +29,7 @@ export interface RedditConfig {
 // TODO: Search past posts to make sure the article hasn't been posted already
 export default async function postFromReddit(
 	config: RedditConfig,
-	client: Client,
+	client: DiscordClient,
 	redditClient: RedditClientInterface = new RedditClient()
 ) {
 	// console.log('Hello, world!');

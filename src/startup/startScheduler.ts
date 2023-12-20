@@ -3,6 +3,7 @@ import config from '../config';
 import postFromRSS from '../controllers/tasks/rss-posts';
 import postFromReddit from '../controllers/tasks/reddit-posts';
 import { Client } from 'discord.js';
+import { DiscordClient } from '../services/discord/discord';
 
 function scheduleJobAtHour(hour: number, fn: () => void) {
 	scheduleJob(`0 ${hour} * * *`, fn);
@@ -16,7 +17,7 @@ function scheduleJobEveryMinute(fn: () => void) {
 	scheduleJob('* * * * *', fn);
 }
 
-function startRSSJobs(client: Client) {
+function startRSSJobs(client: DiscordClient) {
 	for (const rssFeed of config.rssFeeds) {
 		if (rssFeed.frequency.type === 'every') {
 			scheduleJobEveryHour(() => postFromRSS(rssFeed, client));
@@ -28,7 +29,7 @@ function startRSSJobs(client: Client) {
 	}
 }
 
-function startRedditJobs(client: Client) {
+function startRedditJobs(client: DiscordClient) {
 	for (const redditFeed of config.redditFeeds) {
 		if (redditFeed.frequency.type === 'every') {
 			scheduleJobEveryHour(() => postFromReddit(redditFeed, client));
@@ -40,7 +41,7 @@ function startRedditJobs(client: Client) {
 	}
 }
 
-export function startScheduler(client: Client) {
+export function startScheduler(client: DiscordClient) {
 	startRSSJobs(client);
 	startRedditJobs(client);
 }

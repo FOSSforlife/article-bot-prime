@@ -6,7 +6,7 @@ export default {
 		name: 'comments',
 		description: 'Find Reddit threads discussing the selected article.',
 	},
-	async execute(interaction) {
+	async execute(interaction, client) {
 		await postFromReddit(
 			{
 				subreddits: ['worldnews'],
@@ -16,8 +16,7 @@ export default {
 				},
 				preferredDomains: ['apnews.com'],
 			},
-			interaction.client,
-			true
+			client
 		);
 
 		await interaction.reply('Pong reddit!');
