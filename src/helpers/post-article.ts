@@ -70,6 +70,7 @@ export default async function postArticle(urlFromFeed: string, client: Client) {
 	}
 
 	const channel = (await client.channels.fetch(ARTICLE_FORUM_ID)) as ForumChannel;
+	console.log(`Posting in ${channel.name}`);
 	await channel.threads.create({
 		message: {
 			content: `**${title}**\n${url}\n${mbfcString}`,
