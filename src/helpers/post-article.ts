@@ -26,7 +26,7 @@ function getMbfcForUrl(url: string, mbfcData: MBFCData): Result | null {
 export default async function postArticle(urlFromFeed: string, client: Client) {
 	// const { url, title, description, links, image, author, source, published, ttr, content } = await extract(urlFromFeed);
 
-	// console.log(content);
+	console.log('Posting article');
 
 	const mbfcData = JSON.parse((await readFile(path.join('cache', 'mbfc-data.json'))).toString());
 
