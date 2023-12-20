@@ -59,7 +59,7 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 	if (mbfcResult) {
 		const { bias, credibility, factualReporting, name, url } = mbfcResult;
 		publisher = name;
-		mbfcString = `**Media Bias Fact Check for [${publisher}](${url}):**\nBias: ${bias}\nCredibility ${credibility}\nFactual Reporting: ${factualReporting}`;
+		mbfcString = `**Media Bias Fact Check for [${publisher}](${url}):**\nBias: ${bias}\nCredibility ${credibility}\nFactual Reporting: ${factualReporting}\n`;
 	}
 
 	let aiSummaryString = '';
@@ -77,7 +77,7 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 
 	const channel = (await client.channels.fetch(ARTICLE_FORUM_ID)) as ForumChannel;
 	const tag = channel.availableTags.find((tag) => tag.name === tagName);
-	let threadContent = `${aiSummaryString}\n\nWord count: ${wordCount}\n\n${mbfcString}\n${url}`;
+	let threadContent = `${aiSummaryString}\n\nWord count: ${wordCount}\n\n${mbfcString}${url}`;
 	if (threadContent.length > 2000) {
 		threadContent = `${aiSummaryString}\n${url}`;
 	}
