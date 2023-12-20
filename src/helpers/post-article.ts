@@ -55,16 +55,20 @@ export default async function postArticle(urlFromFeed: string, client: Client) {
 	// TODO: Article summary after the article has been posted
 	// const articleSummary = await getArticleSummary(content);
 	// console.log({ articleSummary });
-	if (!mbfcResult) {
-		return;
+	// if (!mbfcResult) {
+	// 	return;
+	// }
+	let mbfcString = '';
+	if (mbfcResult) {
+		const { bias, credibility, factualReporting, name: publisher } = mbfcResult;
+		mbfcString = `**Info about ${publisher}:**\nBias: ${bias}\nCredibility ${credibility}\nFactual Reporting: ${factualReporting}`;
 	}
-	const { bias, credibility, factualReporting, name: publisher } = mbfcResult;
 
 	const channel = (await client.channels.fetch(ARTICLE_FORUM_ID)) as ForumChannel;
 	await channel.threads.create({
 		message: {
-			content: `**${title}**\n${url}\n**Info about ${publisher}:**\nBias: ${bias}\nCredibility ${credibility}\nFactual Reporting: ${factualReporting}`,
+			content: `**${title}**\n${url}\n${mbfcString}`,
 		},
-		name: `${title} (${publisher})`,
+		name: `${title}`,
 	});
 }
