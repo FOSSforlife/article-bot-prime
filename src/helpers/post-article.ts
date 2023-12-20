@@ -68,9 +68,11 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 	if (content) {
 		const articleSummary = await getArticleSummary(title, content, author, publisher ?? tagName);
 		if (articleSummary) {
-			const { summary, discussionQuestions, bias } = articleSummary;
+			const { summary, discussionQuestions, terms, bias } = articleSummary;
 			aiSummaryString = `**Summary:** ${summary}\n\n**Discussion Questions:**\n${discussionQuestions
 				.map((questionText) => `- ${questionText}`)
+				.join('\n')}\n\n**Terms:**\n${terms
+				.map((term) => `- ${term.term}: ${term.definition}`)
 				.join('\n')}\n\n**Bias:**\n${bias}\n\n(Generated using OpenAI's GPT-3.5-Turbo)`;
 		}
 	}
