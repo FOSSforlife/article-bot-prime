@@ -33,10 +33,10 @@ export default async function postArticle(urlFromFeed: string, client: Client) {
 	// Uncomment to use test data:
 	// const { url, title, description, links, image, author, source, published, ttr, content } = articleParserMockResponse;
 
-	const mbfcResult = getMbfcForUrl(url, mbfcData);
 	if (!title || !url) {
 		throw new Error('Invalid article data');
 	}
+	const mbfcResult = getMbfcForUrl(url, mbfcData);
 
 	// console.log(content);
 	const article = {
