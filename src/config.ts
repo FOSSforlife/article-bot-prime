@@ -18,7 +18,7 @@ export default {
 		},
 		{
 			url: 'https://80000hours.org/feed/',
-			name: '80000 Hours',
+			name: '80,000 Hours',
 			frequency: {
 				type: 'every',
 			},

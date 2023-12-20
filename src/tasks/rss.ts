@@ -36,7 +36,7 @@ export default async function postFromRSS(config: RSSConfig, client: Client) {
 
 			// For testing purposes, post the first article
 			if (item.link) {
-				await postArticle(item.link, client);
+				await postArticle(item.link, client, config.name);
 				return;
 			}
 
@@ -49,7 +49,7 @@ export default async function postFromRSS(config: RSSConfig, client: Client) {
 				articleDate.getMonth() === now.getMonth() &&
 				articleDate.getFullYear() === now.getFullYear()
 			) {
-				await postArticle(item.link, client);
+				await postArticle(item.link, client, config.name);
 				console.log(item.link);
 			} else {
 				// console.log(`Not within the hour: ${item.link} ${item.pubDate}`);

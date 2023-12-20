@@ -21,7 +21,7 @@ function getMbfcForUrl(url: string, mbfcData: MBFCData): Result | null {
 	}
 }
 
-export default async function postArticle(urlFromFeed: string, client: Client) {
+export default async function postArticle(urlFromFeed: string, client: Client, tagName: string) {
 	const data = await extract(urlFromFeed);
 	if (!data) {
 		console.error('No data');
@@ -68,10 +68,12 @@ export default async function postArticle(urlFromFeed: string, client: Client) {
 	}
 
 	const channel = (await client.channels.fetch(ARTICLE_FORUM_ID)) as ForumChannel;
+	const tag = channel.availableTags.find((tag) => tag.name === 'Articles');
 	await channel.threads.create({
 		message: {
 			content: `**${title}**\n${url}\n${mbfcString}`,
 		},
+		appliedTags: [],
 		name: `${title}`,
 	});
 }
