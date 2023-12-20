@@ -16,34 +16,34 @@ export default {
 				type: 'every',
 			},
 		},
-		{
-			url: 'https://80000hours.org/feed/',
-			name: '80000 Hours',
-			frequency: {
-				type: 'every',
-			},
-		},
-		{
-			url: 'https://www.astralcodexten.com/feed',
-			name: 'Astral Codex Ten',
-			frequency: {
-				type: 'every',
-			},
-		},
-		{
-			url: 'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/by/ezra-klein/rss.xml',
-			name: 'Ezra Klein',
-			frequency: {
-				type: 'every',
-			},
-		},
-		{
-			url: 'https://www.noahpinion.blog/feed',
-			name: 'Noahpinion',
-			frequency: {
-				type: 'every',
-			},
-		},
+		// {
+		// 	url: 'https://80000hours.org/feed/',
+		// 	name: '80000 Hours',
+		// 	frequency: {
+		// 		type: 'every',
+		// 	},
+		// },
+		// {
+		// 	url: 'https://www.astralcodexten.com/feed',
+		// 	name: 'Astral Codex Ten',
+		// 	frequency: {
+		// 		type: 'every',
+		// 	},
+		// },
+		// {
+		// 	url: 'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/by/ezra-klein/rss.xml',
+		// 	name: 'Ezra Klein',
+		// 	frequency: {
+		// 		type: 'every',
+		// 	},
+		// },
+		// {
+		// 	url: 'https://www.noahpinion.blog/feed',
+		// 	name: 'Noahpinion',
+		// 	frequency: {
+		// 		type: 'every',
+		// 	},
+		// },
 	] as Array<RSSConfig>,
 	redditFeeds: [
 		{
