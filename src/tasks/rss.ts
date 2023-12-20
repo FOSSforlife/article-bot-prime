@@ -27,7 +27,7 @@ export default async function postFromRSS(config: RSSConfig, client: Client) {
 		const feed = await parser.parseURL(config.url);
 		console.log(`Fetching ${config.name}`);
 
-		feed.items.forEach((item) => {
+		for await (const item of feed.items) {
 			// TODO: This won't work if the article's pubDate is behind UTC time
 			if (!item.pubDate) {
 				console.log(`No pubDate: ${item.link}`);
@@ -36,7 +36,7 @@ export default async function postFromRSS(config: RSSConfig, client: Client) {
 
 			// For testing purposes, post the first article
 			if (item.link) {
-				postArticle(item.link, client);
+				await postArticle(item.link, client);
 				return;
 			}
 
@@ -49,13 +49,15 @@ export default async function postFromRSS(config: RSSConfig, client: Client) {
 				articleDate.getMonth() === now.getMonth() &&
 				articleDate.getFullYear() === now.getFullYear()
 			) {
-				postArticle(item.link, client);
+				await postArticle(item.link, client);
 				console.log(item.link);
 			} else {
 				// console.log(`Not within the hour: ${item.link} ${item.pubDate}`);
 				// console.log(new Date(item.pubDate).getHours(), new Date().getHours());
 			}
-		});
+		}
+
+		feed.items.forEach((item) => {});
 	} else {
 		throw new Error('RSS per-day not implemented');
 	}
