@@ -78,7 +78,7 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 
 			shortAiSummaryString = `**Summary:** ${summary}\n\n**Discussion Questions:**\n${discussionQuestions
 				.map((questionText) => `- ${questionText}`)
-				.join('\n')}`;
+				.join('\n')}\n\n(Generated using OpenAI's GPT-3.5-Turbo)`;
 		}
 	}
 
