@@ -77,9 +77,13 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 
 	const channel = (await client.channels.fetch(ARTICLE_FORUM_ID)) as ForumChannel;
 	const tag = channel.availableTags.find((tag) => tag.name === tagName);
+	let threadContent = `${aiSummaryString}\n\nWord count: ${wordCount}\n\n${mbfcString}\n${url}`;
+	if (threadContent.length > 2000) {
+		threadContent = `${aiSummaryString}\n${url}`;
+	}
 	await channel.threads.create({
 		message: {
-			content: `${aiSummaryString}\n\nWord count: ${wordCount}\n\n${mbfcString}\n${url}`,
+			content: threadContent,
 		},
 		appliedTags: tag ? [tag.id] : [],
 		name: `${title}`,
