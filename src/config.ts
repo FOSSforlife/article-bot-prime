@@ -15,6 +15,7 @@ export default {
 			frequency: {
 				type: 'every',
 			},
+			aiSummaries: true,
 		},
 		{
 			url: 'https://80000hours.org/feed/',
@@ -22,6 +23,7 @@ export default {
 			frequency: {
 				type: 'every',
 			},
+			aiSummaries: false,
 		},
 		{
 			url: 'https://www.astralcodexten.com/feed',
@@ -29,6 +31,7 @@ export default {
 			frequency: {
 				type: 'every',
 			},
+			aiSummaries: true,
 		},
 		{
 			url: 'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/by/ezra-klein/rss.xml',
@@ -36,6 +39,7 @@ export default {
 			frequency: {
 				type: 'every',
 			},
+			aiSummaries: true,
 		},
 		{
 			url: 'https://www.noahpinion.blog/feed',
@@ -43,6 +47,7 @@ export default {
 			frequency: {
 				type: 'every',
 			},
+			aiSummaries: true,
 		},
 	] as Array<RSSConfig>,
 	redditFeeds: [

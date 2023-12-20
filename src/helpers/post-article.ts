@@ -62,8 +62,10 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 	// 	return;
 	// }
 	let mbfcString = '';
+	let publisher;
 	if (mbfcResult) {
-		const { bias, credibility, factualReporting, name: publisher } = mbfcResult;
+		const { bias, credibility, factualReporting, name } = mbfcResult;
+		publisher = name;
 		mbfcString = `**Info about ${publisher}:**\nBias: ${bias}\nCredibility ${credibility}\nFactual Reporting: ${factualReporting}`;
 	}
 
@@ -73,7 +75,13 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 		message: {
 			content: `**${title}**\n${url}\n${mbfcString}`,
 		},
-		appliedTags: [],
+		appliedTags: tag ? [tag.id] : [],
 		name: `${title}`,
 	});
+
+	if (content)
+		void (async () => {
+			const articleSummary = await getArticleSummary(title, content, author, publisher ?? tagName);
+			console.log({ articleSummary });
+		})();
 }

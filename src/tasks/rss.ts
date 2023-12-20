@@ -19,6 +19,7 @@ export interface RSSConfig {
 	url: string;
 	name: string;
 	frequency: Frequency;
+	aiSummaries: boolean;
 }
 
 export default async function postFromRSS(config: RSSConfig, client: Client) {
@@ -34,6 +35,7 @@ export default async function postFromRSS(config: RSSConfig, client: Client) {
 				return;
 			}
 
+			// TODO: Remove
 			// For testing purposes, post the first article
 			if (item.link) {
 				await postArticle(item.link, client, config.name);
