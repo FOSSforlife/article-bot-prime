@@ -74,22 +74,26 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 				.map((questionText) => `- ${questionText}`)
 				.join('\n')}\n\n**Bias:**\n${bias}\n\n**Terms:**\n${terms
 				.map((term) => `- ${term.term}: ${term.definition}`)
-				.join('\n')}\n\n(Generated using OpenAI's GPT-3.5-Turbo)`;
+				.join('\n')}\n\n(Generated using OpenAI's GPT-3.5-Turbo)\n\n`;
 
 			shortAiSummaryString = `**Summary:** ${summary}\n\n**Discussion Questions:**\n${discussionQuestions
 				.map((questionText) => `- ${questionText}`)
-				.join('\n')}\n\n(Generated using OpenAI's GPT-3.5-Turbo)`;
+				.join('\n')}\n\n(Generated using OpenAI's GPT-3.5-Turbo)\n\n`;
 		}
 	}
 
+	const readingTimeString = ttr
+		? `Reading time: ${Math.round(ttr / 60)} minute${Math.round(ttr / 60) === 1 ? '' : 's'}\n\n`
+		: '';
+
 	const channel = (await client.channels.fetch(ARTICLE_FORUM_ID)) as ForumChannel;
 	const tag = channel.availableTags.find((tag) => tag.name === tagName);
-	let threadContent = `${aiSummaryString}\n\nWord count: ${wordCount}\n\n${mbfcString}${url}`;
+	let threadContent = `${aiSummaryString}${readingTimeString}${mbfcString}${url}`;
 	if (threadContent.length > 2000) {
-		threadContent = `${aiSummaryString}\n${url}`;
+		threadContent = `${aiSummaryString}${readingTimeString}${url}`;
 	}
 	if (threadContent.length > 2000) {
-		threadContent = `${shortAiSummaryString}\n${url}`;
+		threadContent = `${shortAiSummaryString}${readingTimeString}${url}`;
 	}
 	await channel.threads.create({
 		message: {
