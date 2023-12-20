@@ -57,7 +57,7 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 	let mbfcString = '';
 	let publisher;
 	if (mbfcResult) {
-		const { bias, credibility, factualReporting, name } = mbfcResult;
+		const { bias, credibility, factualReporting, name, url } = mbfcResult;
 		publisher = name;
 		mbfcString = `**Media Bias Fact Check for [${publisher}](${url}):**\nBias: ${bias}\nCredibility ${credibility}\nFactual Reporting: ${factualReporting}`;
 	}
