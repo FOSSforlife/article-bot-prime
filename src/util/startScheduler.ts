@@ -19,7 +19,7 @@ function scheduleJobEveryMinute(fn: () => void) {
 function startRSSJobs(client: Client) {
 	for (const rssFeed of config.rssFeeds) {
 		if (rssFeed.frequency.type === 'every') {
-			scheduleJobEveryHour(() => postFromRSS(rssFeed, client));
+			scheduleJobEveryMinute(() => postFromRSS(rssFeed, client));
 		} else {
 			for (const hour of rssFeed.frequency.hours) {
 				scheduleJobAtHour(hour, () => postFromRSS(rssFeed, client));

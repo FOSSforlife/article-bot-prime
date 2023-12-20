@@ -54,13 +54,8 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 		mbfcResult: mbfcResult ?? undefined,
 	};
 	console.log(article);
+	const wordCount = content?.split(' ').length ?? 0;
 
-	// TODO: Article summary after the article has been posted
-	// const articleSummary = await getArticleSummary(content);
-	// console.log({ articleSummary });
-	// if (!mbfcResult) {
-	// 	return;
-	// }
 	let mbfcString = '';
 	let publisher;
 	if (mbfcResult) {
@@ -73,7 +68,7 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 	const tag = channel.availableTags.find((tag) => tag.name === 'Articles');
 	await channel.threads.create({
 		message: {
-			content: `**${title}**\n${url}\n${mbfcString}`,
+			content: `**${title}**\n${url}\nWord count: ${wordCount}\n\n${mbfcString}`,
 		},
 		appliedTags: tag ? [tag.id] : [],
 		name: `${title}`,
@@ -83,5 +78,6 @@ export default async function postArticle(urlFromFeed: string, client: Client, t
 		void (async () => {
 			const articleSummary = await getArticleSummary(title, content, author, publisher ?? tagName);
 			console.log({ articleSummary });
+			// TODO: Article summary after the article has been posted (or maybe as part of the article post?)
 		})();
 }
