@@ -16,34 +16,34 @@ export default {
 				type: 'every',
 			},
 		},
-		// {
-		// 	url: 'https://80000hours.org/feed/',
-		// 	name: '80000 Hours',
-		// 	frequency: {
-		// 		type: 'every',
-		// 	},
-		// },
-		// {
-		// 	url: 'https://www.astralcodexten.com/feed',
-		// 	name: 'Astral Codex Ten',
-		// 	frequency: {
-		// 		type: 'every',
-		// 	},
-		// },
-		// {
-		// 	url: 'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/by/ezra-klein/rss.xml',
-		// 	name: 'Ezra Klein',
-		// 	frequency: {
-		// 		type: 'every',
-		// 	},
-		// },
-		// {
-		// 	url: 'https://www.noahpinion.blog/feed',
-		// 	name: 'Noahpinion',
-		// 	frequency: {
-		// 		type: 'every',
-		// 	},
-		// },
+		{
+			url: 'https://80000hours.org/feed/',
+			name: '80000 Hours',
+			frequency: {
+				type: 'every',
+			},
+		},
+		{
+			url: 'https://www.astralcodexten.com/feed',
+			name: 'Astral Codex Ten',
+			frequency: {
+				type: 'every',
+			},
+		},
+		{
+			url: 'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/by/ezra-klein/rss.xml',
+			name: 'Ezra Klein',
+			frequency: {
+				type: 'every',
+			},
+		},
+		{
+			url: 'https://www.noahpinion.blog/feed',
+			name: 'Noahpinion',
+			frequency: {
+				type: 'every',
+			},
+		},
 	] as Array<RSSConfig>,
 	redditFeeds: [
 		{
@@ -51,8 +51,8 @@ export default {
 			name: 'News',
 			frequency: {
 				type: 'perDay',
-				// hours: [7, 12],
-				hours: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+				hours: [7, 12],
+				// hours: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
 			},
 			preferredDomains: ['apnews.com', 'reuters.com'],
 		},
@@ -61,8 +61,8 @@ export default {
 			name: 'Opinion',
 			frequency: {
 				type: 'perDay',
-				// hours: [7],
-				hours: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+				hours: [7],
+				// hours: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
 			},
 		},
 	] as Array<RedditConfig>,
