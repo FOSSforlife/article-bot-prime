@@ -25,7 +25,7 @@ export default async function postFromRSS(config: RSSConfig, client: Client) {
 	if (config.frequency.type === 'every') {
 		const parser = new Parser();
 		const feed = await parser.parseURL(config.url);
-		console.log(feed.title);
+		console.log(`Fetching ${config.name}`);
 
 		feed.items.forEach((item) => {
 			// TODO: This won't work if the article's pubDate is behind UTC time
@@ -33,6 +33,13 @@ export default async function postFromRSS(config: RSSConfig, client: Client) {
 				console.log(`No pubDate: ${item.link}`);
 				return;
 			}
+
+			// For testing purposes, post the first article
+			if (item.link) {
+				postArticle(item.link, client);
+				return;
+			}
+
 			const articleDate = new Date(item.pubDate);
 			const now = new Date();
 			if (
