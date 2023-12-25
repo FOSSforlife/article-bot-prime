@@ -1,13 +1,13 @@
 import OpenAI from 'openai';
 
-interface ArticleSummaryResponse {
+export interface ArticleSummaryResponse {
 	summary: string;
 	discussionQuestions: string[];
 	terms: Array<{ term: string; definition: string }>;
 	bias: string;
 }
 
-interface OpenAIClientInterface {
+export interface OpenAIClientInterface {
 	getArticleSummary(
 		title: string,
 		content: string,
@@ -17,6 +17,8 @@ interface OpenAIClientInterface {
 }
 
 export class OpenAIClient implements OpenAIClientInterface {
+	constructor(private client = new OpenAI({})) {}
+
 	public async getArticleSummary(
 		title: string,
 		content: string,
@@ -26,7 +28,7 @@ export class OpenAIClient implements OpenAIClientInterface {
 		try {
 			const authorString = author ? `${author} - ` : '';
 			const publisherString = publisher ? ` (${publisher})` : '';
-			const chatCompletion = await openai.chat.completions.create({
+			const chatCompletion = await this.client.chat.completions.create({
 				messages: [
 					{
 						role: 'system',
@@ -52,7 +54,3 @@ export class OpenAIClient implements OpenAIClientInterface {
 		}
 	}
 }
-
-const openai = new OpenAI({});
-
-export async function

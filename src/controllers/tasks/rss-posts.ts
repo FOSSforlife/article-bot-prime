@@ -44,6 +44,7 @@ export default async function postFromRSS(config: RSSConfig, client: DiscordClie
 
 			const articleDate = new Date(item.pubDate);
 			const now = new Date();
+			// not working
 			if (
 				item.link &&
 				articleDate.getHours() === now.getHours() &&

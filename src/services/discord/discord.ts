@@ -1,9 +1,17 @@
-import { Client, ForumChannel, GuildForumTag } from 'discord.js';
+import { Client, ForumChannel, GatewayIntentBits, GuildForumTag } from 'discord.js';
 import { Event } from '../../controllers/events';
 import { ARTICLE_FORUM_ID } from '../../config';
 import { sleep } from 'openai/core';
 
-export class DiscordClient {
+export interface DiscordClientInterface {
+	init(): void;
+	checkForForumChannel: ForumChannel;
+	createThread(name: string, content: string, appliedTags?: Array<string>): Promise<void>;
+	getAvailableForumTags(): Array<GuildForumTag>;
+	registerEvent(event: Event): void;
+}
+
+export class DiscordClient implements DiscordClientInterface {
 	private forumChannel?: ForumChannel;
 
 	constructor(private client: Client) {}
@@ -18,7 +26,7 @@ export class DiscordClient {
 		}
 	}
 
-	get checkForForumChannel() {
+	get checkForForumChannel(): ForumChannel {
 		if (!this.forumChannel) {
 			console.error('Tried to access forum channel before initializing');
 			sleep(5000);
@@ -45,5 +53,12 @@ export class DiscordClient {
 
 	registerEvent(event: Event) {
 		this.client[event.once ? 'once' : 'on'](event.name, async (...args) => event.execute(...args));
+	}
+
+	static async createInstance() {
+		const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+		const discordClient = new DiscordClient(client);
+		await discordClient.init();
+		return discordClient;
 	}
 }

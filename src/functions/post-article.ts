@@ -1,13 +1,13 @@
-import { extract } from 'article-parser';
+import { ArticleData, extract } from 'article-parser';
 import { getByUrl } from 'mbfc-node';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import { MBFCData, Result } from 'mbfc-node/dist/interfaces';
 import { Client, ForumChannel, TextChannel } from 'discord.js';
 import { articleParserMockResponse } from '../services/test-data/article-parser';
-import { OpenAIClient } from '../services/openai/openai';
+import { ArticleSummaryResponse, OpenAIClient, OpenAIClientInterface } from '../services/openai/openai';
 import { ARTICLE_FORUM_ID } from '../config';
-import { DiscordClient } from '../services/discord/discord';
+import { DiscordClient, DiscordClientInterface } from '../services/discord/discord';
 
 function getMbfcForUrl(url: string, mbfcData: MBFCData): Result | null {
 	try {
@@ -22,11 +22,99 @@ function getMbfcForUrl(url: string, mbfcData: MBFCData): Result | null {
 	}
 }
 
+const concat = (...args: string[]) => args.join('');
+const section = (header: string, content: string) => `**${header}**\n${content}\n\n`;
+
+class Article {
+	constructor(
+		private articleData: ArticleData,
+		private articleSummary: ArticleSummaryResponse,
+		private mediaBias?: Result
+	) {}
+
+	private getAISummaryString() {
+		if (!this.articleSummary) {
+			return '';
+		}
+		const { summary, discussionQuestions, terms, bias } = this.articleSummary;
+		const aiSummaryString = concat(
+			section('Summary', summary),
+			section('Discussion Questions', discussionQuestions.map((questionText) => `- ${questionText}`).join('\n')),
+			section('Bias', bias),
+			section('Terms', terms.map((term) => `- ${term.term}: ${term.definition}`).join('\n')),
+			"(Generated using OpenAI's GPT-3.5-Turbo)\n\n"
+		);
+
+		return aiSummaryString;
+	}
+
+	private getShortAISummaryString() {
+		if (!this.articleSummary) {
+			return '';
+		}
+		const { summary, discussionQuestions } = this.articleSummary;
+		const aiSummaryString = concat(
+			section('Summary', summary),
+			section('Discussion Questions', discussionQuestions.map((questionText) => `- ${questionText}`).join('\n')),
+			"(Generated using OpenAI's GPT-3.5-Turbo)\n\n"
+		);
+
+		return aiSummaryString;
+	}
+
+	private getReadingTimeString() {
+		if (!this.articleData) {
+			return '';
+		}
+		const { ttr } = this.articleData;
+		return ttr ? `Reading time: ${Math.round(ttr / 60)} minute${Math.round(ttr / 60) === 1 ? '' : 's'}\n\n` : '';
+	}
+
+	private getMbfcString() {
+		if (!this.mediaBias) {
+			return '';
+		}
+		const { bias, credibility, factualReporting, name, url } = this.mediaBias;
+		const publisher = name;
+		const reportingString =
+			factualReporting === 'Mostly-Factual' ? 'Mostly-Factual Reporting' : `${factualReporting} Factual Reporting}`;
+		const mbfcString = concat(
+			section(`Media Bias Fact Check for [${publisher}](${url})`, `${bias}, ${credibility}, ${reportingString}`)
+		);
+
+		return mbfcString;
+	}
+
+	get content() {
+		if (!this.articleData) {
+			throw new Error('Article data not fetched');
+		}
+		return this.articleData.content;
+	}
+
+	async getPostString() {
+		const aiSummaryString = this.getAISummaryString();
+		const shortAiSummaryString = this.getShortAISummaryString();
+		const readingTimeString = this.getReadingTimeString();
+
+		const potentialResponses = [
+			concat(aiSummaryString, readingTimeString, this.url),
+			concat(shortAiSummaryString, readingTimeString, this.url),
+			concat(shortAiSummaryString, this.url),
+		];
+		for (const response of potentialResponses) {
+			if (response.length < 2000) {
+				return response;
+			}
+		}
+	}
+}
+
 export default async function postArticle(
 	urlFromFeed: string,
-	discordClient: DiscordClient,
+	discordClient: DiscordClientInterface,
 	tagName: string,
-	openAiClient = new OpenAIClient()
+	openAiClient: OpenAIClientInterface = new OpenAIClient()
 ) {
 	const data = await extract(urlFromFeed);
 	if (!data) {

@@ -32,16 +32,6 @@ export default async function postFromReddit(
 	client: DiscordClient,
 	redditClient: RedditClientInterface = new RedditClient()
 ) {
-	// console.log('Hello, world!');
-
-	// if (useTestData) {
-	// 	const data = redditTestData;
-	// 	const { url, title, description, links, image, author, source, published, ttr, content } =
-	// 		articleParserMockResponse;
-
-	// 	return;
-	// }
-
 	const posts = await redditClient.getPosts(config.subreddits);
 	const preferredPosts = posts.filter((post: any) => (config.preferredDomains ?? []).includes(post.data.domain));
 	if (preferredPosts.length > 0) {

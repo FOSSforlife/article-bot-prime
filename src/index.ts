@@ -21,7 +21,7 @@ import { DiscordClient } from './services/discord/discord';
 	}
 
 	// Initialize the client
-	const client = new DiscordClient(new Client({ intents: [GatewayIntentBits.Guilds] }));
+	const client = await DiscordClient.createInstance();
 
 	// Load the events and commands
 	const events = await loadEvents(path.join(__dirname, 'controllers', 'events'));
