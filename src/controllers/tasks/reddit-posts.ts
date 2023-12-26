@@ -2,7 +2,7 @@ import axios from 'axios';
 import redditTestData from '../../services/test-data/reddit.json';
 import { articleParserMockResponse } from '../../services/test-data/article-parser';
 import { Client } from 'discord.js';
-import postArticle from '../../functions/post-article';
+import postArticle from '../../functions/post-article/post-article';
 import { RedditClient, RedditClientInterface } from '../../services/reddit/reddit';
 import { DiscordClient } from '../../services/discord/discord';
 
