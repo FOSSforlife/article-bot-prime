@@ -60,7 +60,7 @@ export async function loadStructures<T>(
 		// If the structure is a valid structure, add it
 		if (predicate(structure)) structures.push(structure);
 
-		console.log(`Loaded ${new URL(`${dir}/${file}`.replace(`file:///${__dirname}/src`, '..'))}`);
+		console.log(`Loaded ${dir}/${file}`);
 	}
 
 	return structures;
