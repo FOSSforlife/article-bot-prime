@@ -4,12 +4,12 @@ import type { Command } from './index.js';
 
 export default {
 	data: {
-		name: 'summarize',
-		description: 'Summarize the given article using AI.',
+		name: 'post',
+		description: 'Post a new thread with the given article.',
 		options: [
 			{
 				name: 'url',
-				description: 'The URL of the article to summarize.',
+				description: 'The URL of the article to post.',
 				type: ApplicationCommandOptionType.String,
 				required: true,
 			},
@@ -20,8 +20,8 @@ export default {
 		if (!url) {
 			throw new Error('No URL provided.');
 		}
-		await interaction.deferReply();
-		const postString = await postArticle(url, client, false, undefined, false);
-		await interaction.editReply(postString);
+		await interaction.deferReply({ ephemeral: true });
+		await postArticle(url, client, true);
+		await interaction.editReply('Thread posted');
 	},
 } satisfies Command;
