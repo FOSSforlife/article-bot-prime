@@ -59,7 +59,8 @@ export default async function postFromRSS(config: RSSConfig, client: DiscordClie
 			}
 		}
 
-		feed.items.forEach((item) => {});
+		const firstItem = feed.items[0];
+		console.log(new Date(), new Date(firstItem.pubDate ?? 0));
 	} else {
 		throw new Error('RSS per-day not implemented');
 	}

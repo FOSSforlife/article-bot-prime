@@ -5,16 +5,13 @@ import { sleep } from 'openai/core';
 
 export interface DiscordClientInterface {
 	init(): void;
-	checkForForumChannel: ForumChannel;
 	createThread(name: string, content: string, appliedTags?: Array<string>): Promise<void>;
 	getAvailableForumTags(): Array<GuildForumTag>;
 	registerEvent(event: Event): void;
 }
 
 export class DiscordClient implements DiscordClientInterface {
-	private forumChannel?: ForumChannel;
-
-	constructor(private client: Client) {}
+	constructor(private client: Client, private forumChannel: ForumChannel) {}
 
 	async init() {
 		this.client.login(process.env.DISCORD_TOKEN);
@@ -26,19 +23,17 @@ export class DiscordClient implements DiscordClientInterface {
 		}
 	}
 
-	get checkForForumChannel(): ForumChannel {
-		if (!this.forumChannel) {
-			console.error('Tried to access forum channel before initializing');
-			sleep(5000);
+	static async getForumChannel(client: Client) {
+		const forumChannel = await client.channels.fetch(ARTICLE_FORUM_ID);
+		if (forumChannel && forumChannel instanceof ForumChannel) {
+			return forumChannel;
+		} else {
+			throw new Error(`Could not find forum channel ${ARTICLE_FORUM_ID}`);
 		}
-		if (!this.forumChannel) {
-			throw new Error('Access forum channel retry failed. Aborting.');
-		}
-		return this.forumChannel;
 	}
 
 	async createThread(name: string, content: string, appliedTags: Array<string> = []) {
-		this.checkForForumChannel.threads.create({
+		this.forumChannel.threads.create({
 			message: {
 				content,
 			},
@@ -48,7 +43,7 @@ export class DiscordClient implements DiscordClientInterface {
 	}
 
 	getAvailableForumTags() {
-		return this.checkForForumChannel.availableTags;
+		return this.forumChannel.availableTags;
 	}
 
 	registerEvent(event: Event) {
@@ -57,7 +52,10 @@ export class DiscordClient implements DiscordClientInterface {
 
 	static async createInstance() {
 		const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-		const discordClient = new DiscordClient(client);
+		await client.login(process.env.DISCORD_TOKEN);
+		// await sleep(5000);
+		const forumChannel = await DiscordClient.getForumChannel(client);
+		const discordClient = new DiscordClient(client, forumChannel);
 		await discordClient.init();
 		return discordClient;
 	}
