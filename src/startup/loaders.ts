@@ -67,6 +67,7 @@ export async function loadStructures<T>(
 }
 
 export async function loadCommands(dir: PathLike, recursive = true): Promise<Map<string, Command>> {
+	console.log(dir);
 	return (await loadStructures(dir, commandPredicate, recursive)).reduce(
 		(acc, cur) => acc.set(cur.data.name, cur),
 		new Map<string, Command>()
