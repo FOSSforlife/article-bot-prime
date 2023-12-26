@@ -20,7 +20,8 @@ export default {
 		if (!url) {
 			throw new Error('No URL provided.');
 		}
+		await interaction.deferReply();
 		const postString = await postArticle(url, client, false, undefined, false);
-		await interaction.reply(postString);
+		await interaction.editReply(postString);
 	},
 } satisfies Command;
