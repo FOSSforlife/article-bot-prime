@@ -46,10 +46,10 @@ export default async function postFromRSS(config: RSSConfig, client: DiscordClie
 			// not working
 			if (
 				item.link &&
-				articleDate.getHours() === now.getHours() &&
-				articleDate.getDate() === now.getDate() &&
-				articleDate.getMonth() === now.getMonth() &&
-				articleDate.getFullYear() === now.getFullYear()
+				articleDate.getUTCHours() === now.getUTCHours() &&
+				articleDate.getUTCDate() === now.getUTCDate() &&
+				articleDate.getUTCMonth() === now.getUTCMonth() &&
+				articleDate.getUTCFullYear() === now.getUTCFullYear()
 			) {
 				await postArticle(item.link, client, true, config.name);
 				console.log(item.link);

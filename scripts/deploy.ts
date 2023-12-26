@@ -1,8 +1,7 @@
 import process from 'node:process';
-import { URL } from 'node:url';
 import { API } from '@discordjs/core';
 import { REST } from 'discord.js';
-import { loadCommands } from './loaders';
+import { loadCommands } from '../src/startup/loaders';
 import path from 'node:path';
 
 (async () => {
