@@ -34,6 +34,7 @@ export async function loadStructures<T>(
 
 	// Get all the files in the directory
 	const files = await readdir(dir);
+	console.log(files);
 
 	// Create an empty array to store the structures
 	const structures: T[] = [];
