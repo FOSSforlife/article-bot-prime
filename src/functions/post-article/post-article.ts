@@ -7,19 +7,20 @@ import { Article } from './article';
 export default async function postArticle(
 	urlFromFeed: string,
 	discordClient: DiscordClientInterface,
-	tagName: string,
+	createThread: boolean = true,
+	tagName?: string,
+	includeUrl: boolean = true,
 	openAiClient: OpenAIClientInterface = new OpenAIClient(),
 	mbfcClient?: MBFCClientInterface,
 	extractFn: (url: string) => Promise<ArticleData> = extract
-) {
+): Promise<string> {
 	if (!mbfcClient) {
 		mbfcClient = await MBFCClient.getInstance();
 	}
 
 	const data = await extractFn(urlFromFeed);
 	if (!data || !data.title) {
-		console.error('No data');
-		return;
+		throw new Error('No article data');
 	}
 
 	console.log('Posting article');
@@ -28,12 +29,15 @@ export default async function postArticle(
 	const summary = data.content
 		? await openAiClient.getArticleSummary(data.title, data.content, data.author, mbfcResult?.name)
 		: null;
-	const article = new Article(urlFromFeed, data, summary, mbfcResult);
-	const tag = discordClient.getAvailableForumTags().find((tag) => tag.name === tagName);
+	const article = new Article(urlFromFeed, data, summary, mbfcResult, includeUrl);
+	const tag = tagName ? discordClient.getAvailableForumTags().find((tag) => tag.name === tagName) : undefined;
 	const postString = article.getPostString();
 	if (!postString) {
 		throw new Error('Failed to generate post string');
 	}
 
-	await discordClient.createThread(`${data.title}`, postString, tag ? [tag.id] : []);
+	if (createThread) {
+		await discordClient.createThread(`${data.title}`, postString, tag ? [tag.id] : []);
+	}
+	return postString;
 }

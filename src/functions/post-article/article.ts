@@ -10,7 +10,8 @@ export class Article {
 		private url: string,
 		private articleData: ArticleData,
 		private articleSummary: ArticleSummaryResponse | null,
-		private mediaBias: Result | null
+		private mediaBias: Result | null,
+		private includeUrl: boolean
 	) {}
 
 	private getAISummaryString() {
@@ -80,16 +81,17 @@ export class Article {
 		const mbfcString = this.getMbfcString();
 
 		const potentialResponses = [
-			concat(aiSummaryString, readingTimeString, mbfcString, this.url),
-			concat(aiSummaryString, readingTimeString, this.url),
-			concat(aiSummaryString, this.url),
-			concat(shortAiSummaryString, readingTimeString, mbfcString, this.url),
-			concat(shortAiSummaryString, readingTimeString, this.url),
-			concat(shortAiSummaryString, this.url),
+			concat(aiSummaryString, readingTimeString, mbfcString),
+			concat(aiSummaryString, readingTimeString),
+			concat(aiSummaryString),
+			concat(shortAiSummaryString, readingTimeString, mbfcString),
+			concat(shortAiSummaryString, readingTimeString),
+			concat(shortAiSummaryString),
 		];
 		for (const response of potentialResponses) {
-			if (response.length < 2000) {
-				return response;
+			const responseWithUrl = this.includeUrl ? concat(response, this.url) : response;
+			if (responseWithUrl.length < 2000) {
+				return responseWithUrl;
 			}
 		}
 	}

@@ -37,7 +37,7 @@ export default async function postFromReddit(
 	if (preferredPosts.length > 0) {
 		const { permalink, url, link_flair_text, title } = preferredPosts[0].data;
 		console.log({ permalink, url, link_flair_text, title });
-		await postArticle(url, client, config.name);
+		await postArticle(url, client, true, config.name);
 	} else {
 		console.log('No preferred post');
 		const { permalink, url, link_flair_text, title } = posts[0].data;

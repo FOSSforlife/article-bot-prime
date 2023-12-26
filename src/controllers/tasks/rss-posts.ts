@@ -1,4 +1,3 @@
-import { Client } from 'discord.js';
 import Parser from 'rss-parser';
 import postArticle from '../../functions/post-article/post-article';
 import { DiscordClient } from '../../services/discord/discord';
@@ -52,7 +51,7 @@ export default async function postFromRSS(config: RSSConfig, client: DiscordClie
 				articleDate.getMonth() === now.getMonth() &&
 				articleDate.getFullYear() === now.getFullYear()
 			) {
-				await postArticle(item.link, client, config.name);
+				await postArticle(item.link, client, true, config.name);
 				console.log(item.link);
 			} else {
 				// console.log(`Not within the hour: ${item.link} ${item.pubDate}`);
