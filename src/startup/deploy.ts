@@ -6,7 +6,7 @@ import { loadCommands } from './loaders';
 import path from 'node:path';
 
 (async () => {
-	const commands = await loadCommands(path.join(__dirname, '..', 'commands'));
+	const commands = await loadCommands(path.join(__dirname, '..', 'controllers', 'commands'));
 	const commandData = [...commands.values()].map((command) => command.data);
 
 	const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN!);

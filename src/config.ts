@@ -10,6 +10,14 @@ export const ARTICLE_FORUM_ID = '1029218031857053766';
 export default {
 	rssFeeds: [
 		{
+			url: 'https://www.vox.com/rss/index.xml',
+			name: 'Vox',
+			frequency: {
+				type: 'every',
+			},
+			aiSummaries: true,
+		},
+		{
 			url: 'https://www.vox.com/rss/future-perfect/index.xml',
 			name: 'Future Perfect',
 			frequency: {

@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from 'discord.js';
-import postArticle from '../../functions/post-article/post-article.js';
+import postArticle from '../../functions/post-article/post-article';
 import type { Command } from './index.js';
 
 export default {
