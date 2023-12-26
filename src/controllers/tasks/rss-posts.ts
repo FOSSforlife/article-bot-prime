@@ -32,7 +32,7 @@ export default async function postFromRSS(config: RSSConfig, client: DiscordClie
 			// TODO: This won't work if the article's pubDate is behind UTC time
 			if (!item.pubDate) {
 				console.log(`No pubDate: ${item.link}`);
-				return;
+				continue;
 			}
 
 			// For testing purposes, post the first article
@@ -61,6 +61,7 @@ export default async function postFromRSS(config: RSSConfig, client: DiscordClie
 
 		const firstItem = feed.items[0];
 		console.log(new Date(), new Date(firstItem.pubDate ?? 0));
+		console.log({ firstItem });
 	} else {
 		throw new Error('RSS per-day not implemented');
 	}
