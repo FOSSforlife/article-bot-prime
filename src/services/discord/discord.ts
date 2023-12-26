@@ -57,6 +57,7 @@ export class DiscordClient implements DiscordClientInterface {
 		const forumChannel = await DiscordClient.getForumChannel(client);
 		const discordClient = new DiscordClient(client, forumChannel);
 		await discordClient.init();
+		console.log('Discord client initialized');
 		return discordClient;
 	}
 }
