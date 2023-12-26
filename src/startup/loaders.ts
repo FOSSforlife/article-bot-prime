@@ -34,7 +34,6 @@ export async function loadStructures<T>(
 
 	// Get all the files in the directory
 	const files = await readdir(dir);
-	console.log(files);
 
 	// Create an empty array to store the structures
 	const structures: T[] = [];
@@ -42,7 +41,7 @@ export async function loadStructures<T>(
 	// Loop through all the files in the directory
 	for (const file of files) {
 		// If the file is index.ts or the file does not end with .ts, skip the file
-		if (file === 'index.ts' || !(file.endsWith('.ts') || file.endsWith('.js'))) {
+		if (file === 'index.ts' || file === 'index.js' || !(file.endsWith('.ts') || file.endsWith('.js'))) {
 			continue;
 		}
 
@@ -68,7 +67,6 @@ export async function loadStructures<T>(
 }
 
 export async function loadCommands(dir: PathLike, recursive = true): Promise<Map<string, Command>> {
-	console.log(dir);
 	return (await loadStructures(dir, commandPredicate, recursive)).reduce(
 		(acc, cur) => acc.set(cur.data.name, cur),
 		new Map<string, Command>()
