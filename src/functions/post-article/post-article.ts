@@ -12,7 +12,8 @@ export default async function postArticle(
 	includeUrl: boolean = true,
 	openAiClient: OpenAIClientInterface = new OpenAIClient(),
 	mbfcClient?: MBFCClientInterface,
-	extractFn: (url: string) => Promise<ArticleData> = extract
+	extractFn: (url: string) => Promise<ArticleData> = extract,
+	articleClass: typeof Article = Article
 ): Promise<string> {
 	if (!mbfcClient) {
 		mbfcClient = await MBFCClient.getInstance();
@@ -29,7 +30,7 @@ export default async function postArticle(
 	const summary = data.content
 		? await openAiClient.getArticleSummary(data.title, data.content, data.author, mbfcResult?.name)
 		: null;
-	const article = new Article(urlFromFeed, data, summary, mbfcResult, includeUrl);
+	const article = new articleClass(urlFromFeed, data, summary, mbfcResult, includeUrl);
 	const tag = tagName ? discordClient.getAvailableForumTags().find((tag) => tag.name === tagName) : undefined;
 	const postString = article.getPostString();
 	if (!postString) {

@@ -1,7 +1,6 @@
 import { Client, ForumChannel, GatewayIntentBits, GuildForumTag } from 'discord.js';
 import { Event } from '../../controllers/events';
 import { ARTICLE_FORUM_ID } from '../../config';
-import { sleep } from 'openai/core';
 
 export interface DiscordClientInterface {
 	init(): void;
