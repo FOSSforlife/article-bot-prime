@@ -2,21 +2,21 @@ import { RedditConfig } from './controllers/tasks/reddit-posts';
 import { RSSConfig } from './controllers/tasks/rss-posts';
 
 // Test channel
-export const ARTICLE_FORUM_ID = '1029218031857053766';
+// export const ARTICLE_FORUM_ID = '1029218031857053766';
 
 // Production channel
-// export const ARTICLE_FORUM_ID = '1020378946900074557';
+export const ARTICLE_FORUM_ID = '1020378946900074557';
 
 export default {
 	rssFeeds: [
-		{
-			url: 'https://www.vox.com/rss/index.xml',
-			name: 'Vox',
-			frequency: {
-				type: 'every',
-			},
-			aiSummaries: true,
-		},
+		// {
+		// 	url: 'https://www.vox.com/rss/index.xml',
+		// 	name: 'Vox',
+		// 	frequency: {
+		// 		type: 'every',
+		// 	},
+		// 	aiSummaries: true,
+		// },
 		{
 			url: 'https://www.vox.com/rss/future-perfect/index.xml',
 			name: 'Future Perfect',
